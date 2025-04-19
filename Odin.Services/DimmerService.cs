@@ -1,10 +1,41 @@
 using System;
 using System.Drawing;
+using System.Runtime.InteropServices; // Needed for DllImport
 using System.Windows.Forms;
 using Microsoft.Win32;
 
 namespace Odin.Services
 {
+    // Internal helper class for the click-through overlay
+    internal class ClickThroughForm : Form
+    {
+        // Define necessary WinAPI constants
+        private const int WS_EX_LAYERED = 0x80000;
+        private const int WS_EX_TRANSPARENT = 0x20;
+        private const int GWL_EXSTYLE = -20;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= WS_EX_LAYERED | WS_EX_TRANSPARENT;
+                return cp;
+            }
+        }
+
+        // Optional: Override WndProc to further ensure transparency if needed,
+        // but WS_EX_TRANSPARENT usually suffices.
+        // protected override void WndProc(ref Message m) { ... }
+    }
+
+
     public class DimmerService : IDisposable
     {
         // Declare as nullable (Form?) to handle CS8618
@@ -24,15 +55,15 @@ namespace Odin.Services
             // Check if already initialized (though unlikely needed with constructor call)
             if (overlayForm != null) return;
 
-            overlayForm = new Form
+            overlayForm = new ClickThroughForm // Use the derived class
             {
-                 Text = "Odin Dimmer Overlay",
+                 Text = "Odin Dimmer Overlay", // Won't be visible
                  FormBorderStyle = FormBorderStyle.None,
                  StartPosition = FormStartPosition.Manual,
                  ShowInTaskbar = false,
-                 BackColor = Color.Black,
-                 Opacity = 0.3,
-                 TopMost = true,
+                 BackColor = Color.Black, // Background color
+                 // Opacity = 0.3, // Set Opacity AFTER handle creation or in Show()
+                 TopMost = true, // Keep on top
             };
             // Subscribe AFTER form is created
              try { SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged; } catch (Exception ex) { Console.WriteLine($"Warning: Failed to subscribe to DisplaySettingsChanged event for Dimmer: {ex.Message}"); }
@@ -52,9 +83,13 @@ namespace Odin.Services
              try
              {
                 UpdateOverlayBounds();
+                // Ensure handle is created before setting opacity if not already shown
+                if (!overlayForm.IsHandleCreated) overlayForm.CreateControl();
+                // Set opacity here or use SetDimLevel which already does
+                // overlayForm.Opacity = Math.Clamp(currentDimLevel, 0.0f, 0.95f); // Assuming currentDimLevel field exists
                 overlayForm.Show();
                 isVisible = true;
-                overlayForm.TopMost = true;
+                overlayForm.TopMost = true; // Re-assert TopMost after showing
              }
               catch (ObjectDisposedException) { /* Ignore */ }
               catch (Exception ex) { Console.WriteLine($"Error showing dimmer overlay: {ex.Message}"); }

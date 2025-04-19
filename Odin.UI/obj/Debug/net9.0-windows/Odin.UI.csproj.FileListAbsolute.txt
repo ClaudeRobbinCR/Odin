@@ -25,3 +25,4 @@ D:\Odin\Odin.UI\obj\Debug\net9.0-windows\refint\Odin.UI.dll
 D:\Odin\Odin.UI\obj\Debug\net9.0-windows\Odin.UI.pdb
 D:\Odin\Odin.UI\obj\Debug\net9.0-windows\Odin.UI.genruntimeconfig.cache
 D:\Odin\Odin.UI\obj\Debug\net9.0-windows\ref\Odin.UI.dll
+D:\Odin\Odin.UI\obj\Debug\net9.0-windows\Odin.UI.sourcelink.json

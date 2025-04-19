@@ -15,3 +15,4 @@ D:\Odin\Odin.Services\obj\Debug\net9.0-windows\Odin.Services.dll
 D:\Odin\Odin.Services\obj\Debug\net9.0-windows\refint\Odin.Services.dll
 D:\Odin\Odin.Services\obj\Debug\net9.0-windows\Odin.Services.pdb
 D:\Odin\Odin.Services\obj\Debug\net9.0-windows\ref\Odin.Services.dll
+D:\Odin\Odin.Services\obj\Debug\net9.0-windows\Odin.Services.sourcelink.json

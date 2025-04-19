@@ -3,11 +3,15 @@ using System.Drawing; // Add reference: Right-click project > Add > Reference > 
 using System.Runtime.InteropServices;
 using Microsoft.Win32; // Required for SystemEvents
 
+using Serilog; // Add Serilog
+
 namespace Odin.Services // Updated namespace
 {
     // NOTE: Ensure <UseWindowsForms>true</UseWindowsForms> is in Odin.Services.csproj
     public class GammaService : IDisposable
     {
+        private static readonly ILogger _log = Log.ForContext<GammaService>(); // Add logger instance
+
         [DllImport("gdi32.dll")]
         private static extern bool SetDeviceGammaRamp(IntPtr hDC, ref RAMP lpRamp);
 
@@ -39,9 +43,8 @@ namespace Odin.Services // Updated namespace
             }
             catch (Exception ex)
             {
-                 // Logging this would be ideal (requires passing ILogger or using static Log)
-                 Console.WriteLine($"Warning: Failed to subscribe to DisplaySettingsChanged event: {ex.Message}");
-                 // Functionality might degrade if display changes aren't handled
+                _log.Warning(ex, "Failed to subscribe to DisplaySettingsChanged event.");
+                // Functionality might degrade if display changes aren't handled
             }
         }
 
@@ -86,31 +89,45 @@ namespace Odin.Services // Updated namespace
             }
             else
             {
-                 Console.WriteLine("Error: Could not get screen device context to apply gamma.");
-                 // Consider logging or throwing an exception if this failure is critical
+                _log.Error("Could not get screen device context (hDC) to apply gamma.");
+                // Consider throwing an exception if this failure is critical
             }
         }
 
         public void RestoreOriginalGamma() // cite: 201
         {
+            _log.Debug("Attempting to restore original gamma ramp. HasOriginalRamp: {HasRamp}", hasOriginalRamp);
             if (hasOriginalRamp) // cite: 201
             {
                  IntPtr hdc = GetDC(IntPtr.Zero); // cite: 201
                  if (hdc != IntPtr.Zero)
                  {
-                    SetDeviceGammaRamp(hdc, ref originalRamp); // cite: 201
+                    bool success = SetDeviceGammaRamp(hdc, ref originalRamp); // cite: 201
                     ReleaseDC(IntPtr.Zero, hdc); // cite: 201
-                    isNightLightApplied = false;
+                    if (success)
+                    {
+                        _log.Information("Successfully restored original gamma ramp.");
+                        isNightLightApplied = false;
+                    }
+                    else
+                    {
+                        _log.Error("SetDeviceGammaRamp failed when trying to restore original ramp.");
+                    }
                  }
                  else
                  {
-                    Console.WriteLine("Error: Could not get screen device context to restore gamma.");
+                    _log.Error("Could not get screen device context (hDC) to restore gamma.");
                  }
+            }
+            else
+            {
+                _log.Warning("Cannot restore original gamma ramp because it was not successfully backed up.");
             }
         }
 
         private void BackupOriginalGammaRamp() // cite: 202
         {
+            _log.Debug("Attempting to back up original gamma ramp...");
             originalRamp = new RAMP // cite: 202
             {
                 Red = new ushort[256], // cite: 202
@@ -125,7 +142,7 @@ namespace Odin.Services // Updated namespace
 
                 if (!hasOriginalRamp)
                 {
-                    Console.WriteLine("Warning: Failed to get original gamma ramp. Initializing a linear ramp.");
+                    _log.Warning("GetDeviceGammaRamp failed. Initializing a default linear ramp as fallback original.");
                     // Initialize with a linear ramp as a fallback
                     for (int i = 0; i < 256; i++)
                     {
@@ -139,18 +156,18 @@ namespace Odin.Services // Updated namespace
             }
             else
             {
-                 Console.WriteLine("Error: Could not get screen device context for gamma backup.");
-                 hasOriginalRamp = false;
+                _log.Error("Could not get screen device context (hDC) for gamma backup.");
+                hasOriginalRamp = false;
             }
         }
 
         private void OnDisplaySettingsChanged(object? sender, EventArgs e)
         {
-            Console.WriteLine("Display settings changed. Re-evaluating gamma...");
+            _log.Information("Display settings changed event detected. Re-evaluating gamma...");
             BackupOriginalGammaRamp();
             if (isNightLightApplied)
             {
-                Console.WriteLine("Re-applying night light...");
+                _log.Information("Re-applying night light due to display settings change...");
                 // Use a small delay if changes happen rapidly, although often not needed
                 // System.Threading.Thread.Sleep(50); // Optional small delay
                 ApplyNightLight(currentTemperature);
@@ -165,6 +182,7 @@ namespace Odin.Services // Updated namespace
 
         public void Dispose()
         {
+            _log.Debug("Disposing GammaService, restoring original gamma...");
             RestoreOriginalGamma();
              try
              {
@@ -172,7 +190,7 @@ namespace Odin.Services // Updated namespace
              }
              catch (Exception ex)
              {
-                 Console.WriteLine($"Warning: Failed to unsubscribe from DisplaySettingsChanged event: {ex.Message}");
+                 _log.Warning(ex, "Failed to unsubscribe from DisplaySettingsChanged event during Dispose.");
              }
             GC.SuppressFinalize(this);
         }

@@ -86,8 +86,27 @@ namespace Odin.UI
             }
             finally
             {
-                 Log.Information("Odin Application Exiting.");
-                 Log.CloseAndFlush();
+                 Log.Information("Odin Application Exiting. Disposing services...");
+
+                 // Explicitly dispose services obtained from the provider or created manually
+                 try
+                 {
+                     serviceProvider?.Dispose(); // Dispose the container and its disposables (if any were registered as scoped/transient)
+
+                     // Manually dispose singletons if not handled by container disposal (safer to do both)
+                     (serviceProvider?.GetService<GammaService>() as IDisposable)?.Dispose();
+                     (serviceProvider?.GetService<DimmerService>() as IDisposable)?.Dispose();
+                     // ReminderService was created manually, need to dispose it if it's IDisposable
+                     // Assuming reminderServiceInstance is accessible here or made so
+                     // (reminderServiceInstance as IDisposable)?.Dispose();
+                 }
+                 catch (Exception ex)
+                 {
+                     Log.Error(ex, "Error during service disposal.");
+                 }
+
+                 Log.Information("Service disposal complete.");
+                 Log.CloseAndFlush(); // Flush logs after disposal attempts
                  mutex?.ReleaseMutex();
                  mutex?.Dispose();
             }

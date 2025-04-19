@@ -13,3 +13,4 @@ D:\Odin\Odin.Utilities\obj\Debug\net9.0\Odin.Utilities.dll
 D:\Odin\Odin.Utilities\obj\Debug\net9.0\refint\Odin.Utilities.dll
 D:\Odin\Odin.Utilities\obj\Debug\net9.0\Odin.Utilities.pdb
 D:\Odin\Odin.Utilities\obj\Debug\net9.0\ref\Odin.Utilities.dll
+D:\Odin\Odin.Utilities\obj\Debug\net9.0\Odin.Utilities.sourcelink.json

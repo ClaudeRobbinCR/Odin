@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Odin.Utilities")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+70700cce38978c26856d2ce0818152315c386b0a")]
 [assembly: System.Reflection.AssemblyProductAttribute("Odin.Utilities")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Odin.Utilities")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

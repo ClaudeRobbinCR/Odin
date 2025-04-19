@@ -9,3 +9,4 @@ D:\Odin\Odin.Models\obj\Debug\net9.0\Odin.Models.dll
 D:\Odin\Odin.Models\obj\Debug\net9.0\refint\Odin.Models.dll
 D:\Odin\Odin.Models\obj\Debug\net9.0\Odin.Models.pdb
 D:\Odin\Odin.Models\obj\Debug\net9.0\ref\Odin.Models.dll
+D:\Odin\Odin.Models\obj\Debug\net9.0\Odin.Models.sourcelink.json

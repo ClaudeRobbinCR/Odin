@@ -99,6 +99,9 @@ namespace Odin.UI.Forms // Ensure this namespace matches
              this.dimmerService = dimmerSvc ?? throw new ArgumentNullException(nameof(dimmerSvc));
             // this.reminderService = reminderSvc; // Only if passed in
 
+            // Apply theme colors FIRST
+            this.BackColor = DarkBackground; // Set form background explicitly
+
             InitializeComponent(); // Calls designer code (sets form properties)
             CreateControls();      // Actually create the controls
             SetupTrayIcon();       // Creates tray icon
@@ -161,17 +164,23 @@ namespace Odin.UI.Forms // Ensure this namespace matches
             Action<Control> styleControl = (ctrl) =>
             {
                 ctrl.Font = MonoFont;
+                // Ensure ForeColor is set for all relevant controls
                 ctrl.ForeColor = LightForeground;
+
+                // Set background based on type
                 if (ctrl is CheckBox || ctrl is Label)
                 {
-                    ctrl.BackColor = Color.Transparent; // Make background transparent
+                    // Labels and CheckBoxes should have transparent background to show form's DarkBackground
+                    ctrl.BackColor = Color.Transparent;
                 }
-                else
+                else if (ctrl is Button || ctrl is NumericUpDown || ctrl is TrackBar) // Added TrackBar here for consistency
                 {
-                    ctrl.BackColor = Color.FromArgb(40, 40, 50); // Slightly lighter dark for control background
+                    // Other interactive controls get a slightly lighter background
+                    ctrl.BackColor = Color.FromArgb(40, 40, 50);
                 }
+                // Removed redundant else block
 
-                 // Specific styling
+                 // Specific styling adjustments
                  if (ctrl is TrackBar tb)
                  {
                     // Basic trackbar styling is very limited in WinForms
@@ -235,10 +244,10 @@ namespace Odin.UI.Forms // Ensure this namespace matches
             this.Controls.Add(breakIntervalNumeric);
             currentY += 40;
 
-            // Status Label
-            statusLabel = new Label { Text = "System Status: Nominal", Location = new Point(20, currentY), Width = this.ClientSize.Width - 40, ForeColor = Color.Gray }; // Subdued status text
-            styleControl(statusLabel); // Apply base style
-            statusLabel.BackColor = Color.Transparent; // Ensure transparent
+            // Status Label - Apply styleControl first, then override ForeColor if needed
+            statusLabel = new Label { Text = "System Status: Nominal", Location = new Point(20, currentY), Width = this.ClientSize.Width - 40 };
+            styleControl(statusLabel); // Apply base style (LightForeground, Transparent BackColor)
+            statusLabel.ForeColor = Color.Gray; // Override to subdued color AFTER base style
             this.Controls.Add(statusLabel);
             currentY += 30;
 
