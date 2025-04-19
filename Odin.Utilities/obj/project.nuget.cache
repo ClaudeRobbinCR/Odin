@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "YPHJI6KuE1o=",
+  "success": true,
+  "projectFilePath": "D:\\Odin\\Odin.Utilities\\Odin.Utilities.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\crcla\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\crcla\\.nuget\\packages\\serilog\\4.2.0\\serilog.4.2.0.nupkg.sha512",
+    "C:\\Users\\crcla\\.nuget\\packages\\serilog.sinks.file\\6.0.0\\serilog.sinks.file.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

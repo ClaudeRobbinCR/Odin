@@ -1,0 +1,15 @@
+D:\Odin\Odin.Utilities\obj\Debug\net9.0\Odin.Utilities.csproj.AssemblyReference.cache
+D:\Odin\Odin.Utilities\obj\Debug\net9.0\Odin.Utilities.GeneratedMSBuildEditorConfig.editorconfig
+D:\Odin\Odin.Utilities\obj\Debug\net9.0\Odin.Utilities.AssemblyInfoInputs.cache
+D:\Odin\Odin.Utilities\obj\Debug\net9.0\Odin.Utilities.AssemblyInfo.cs
+D:\Odin\Odin.Utilities\obj\Debug\net9.0\Odin.Utilities.csproj.CoreCompileInputs.cache
+D:\Odin\Odin.Utilities\bin\Debug\net9.0\Odin.Utilities.deps.json
+D:\Odin\Odin.Utilities\bin\Debug\net9.0\Odin.Utilities.dll
+D:\Odin\Odin.Utilities\bin\Debug\net9.0\Odin.Utilities.pdb
+D:\Odin\Odin.Utilities\bin\Debug\net9.0\Odin.Models.dll
+D:\Odin\Odin.Utilities\bin\Debug\net9.0\Odin.Models.pdb
+D:\Odin\Odin.Utilities\obj\Debug\net9.0\Odin.Uti.6D82301A.Up2Date
+D:\Odin\Odin.Utilities\obj\Debug\net9.0\Odin.Utilities.dll
+D:\Odin\Odin.Utilities\obj\Debug\net9.0\refint\Odin.Utilities.dll
+D:\Odin\Odin.Utilities\obj\Debug\net9.0\Odin.Utilities.pdb
+D:\Odin\Odin.Utilities\obj\Debug\net9.0\ref\Odin.Utilities.dll

@@ -1,0 +1,5 @@
+D:\Odin\Odin.Services\obj\Debug\net9.0\Odin.Services.csproj.AssemblyReference.cache
+D:\Odin\Odin.Services\obj\Debug\net9.0\Odin.Services.GeneratedMSBuildEditorConfig.editorconfig
+D:\Odin\Odin.Services\obj\Debug\net9.0\Odin.Services.AssemblyInfoInputs.cache
+D:\Odin\Odin.Services\obj\Debug\net9.0\Odin.Services.AssemblyInfo.cs
+D:\Odin\Odin.Services\obj\Debug\net9.0\Odin.Services.csproj.CoreCompileInputs.cache
